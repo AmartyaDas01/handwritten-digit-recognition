@@ -147,6 +147,20 @@ with gr.Blocks(title="Handwritten Digit Recognition") as demo:
 
     sketchpad.change(predict, inputs=sketchpad, outputs=prediction)
 
+    gr.Examples(
+        examples=[
+            ["examples/7.png"],
+            ["examples/42.png"],
+            ["examples/319.png"],
+            ["examples/8.png"],
+        ],
+        inputs=sketchpad,
+        outputs=prediction,
+        fn=predict,
+        cache_examples=False,
+        label="Or try an example",
+    )
+
 if __name__ == "__main__":
     demo.launch(
         server_name="0.0.0.0",
