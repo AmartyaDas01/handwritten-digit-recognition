@@ -3,6 +3,11 @@
 Draw one or more digits in the browser with your mouse and a small CNN reads them
 back live — draw a "7", or draw "3", "4", "5" in a row and get "345".
 
+**Live demo:** https://handwritten-digit-recognition-ho1h.onrender.com
+
+_(free hosting tier spins down after 15 minutes idle — first load after a while can
+take 30-50s to wake up)_
+
 ## How it works
 
 A small CNN (two Conv2D + MaxPool blocks, dense head, dropout) is trained on MNIST and
