@@ -1,5 +1,7 @@
 """Gradio demo: draw a digit, get a prediction from an MNIST-trained CNN."""
 
+import os
+
 import numpy as np
 import gradio as gr
 from PIL import Image
@@ -97,4 +99,4 @@ with gr.Blocks(title="Handwritten Digit Recognition") as demo:
     sketchpad.change(predict, inputs=sketchpad, outputs=label)
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(server_name="0.0.0.0", server_port=int(os.environ.get("PORT", 7860)))
