@@ -1,23 +1,24 @@
 # Handwritten Digit Recognition
 
-Draw one or more digits in the browser with your mouse and a small CNN reads them
-back live — draw a "7", or draw "3", "4", "5" in a row and get "345".
+Draw one or more digits in the browser with your mouse and a small CNN reads them back
+live. Draw a "7", or draw "3", "4", "5" in a row, and get "345".
 
 **Live demo:** https://handwritten-digit-recognition-ho1h.onrender.com
 
-_(free hosting tier spins down after 15 minutes idle — first load after a while can
-take 30-50s to wake up)_
+_(free hosting tier spins down after 15 minutes idle, so the first load after a while
+can take 30-50s to wake up)_
 
 ## How it works
 
 A small CNN (two Conv2D + MaxPool blocks, dense head, dropout) is trained on MNIST and
-reaches **98.8% test accuracy**. The tricky part of a demo like this isn't the model —
-it's making a messy mouse drawing look like an MNIST digit before it hits the model:
-the canvas image is inverted to white-on-black, then each digit is found via
+reaches 98.8% test accuracy. The model was never the hard part, though. The hard part
+is making a messy mouse drawing look like an MNIST digit before it even reaches the
+model: the canvas gets inverted to white-on-black, each digit is found through
 connected-component segmentation, cropped to its bounding box, rescaled to fit a 20x20
 box, and re-centered by center of mass inside a 28x28 frame, matching MNIST's own
-preprocessing. Multiple digits are segmented left to right and classified one at a
-time, so draw them with a clear gap between each one.
+preprocessing. Multiple digits get segmented left to right and classified one at a
+time, so draw them with a clear gap between each one, or the segmenter will lump them
+together.
 
 ## Stack
 
