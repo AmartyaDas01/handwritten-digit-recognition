@@ -1,12 +1,13 @@
 """Gradio demo: draw one or more digits, get a live prediction from an MNIST-trained CNN."""
 
 import os
+from typing import cast
 
 import numpy as np
 import gradio as gr
 from PIL import Image
 from scipy import ndimage
-from tensorflow import keras
+from tensorflow import keras  # type: ignore[reportMissingModuleSource]
 
 model = keras.models.load_model("model.keras")
 
@@ -72,7 +73,11 @@ def segment_digits(ink):
     if not mask.any():
         return []
 
-    labeled, n = ndimage.label(mask, structure=np.ones((3, 3)))
+    # scipy ships no type stubs for ndimage.label, so pyright can't infer its
+    # (ndarray, int) return; the cast documents what it actually returns.
+    labeled, n = cast(
+        "tuple[np.ndarray, int]", ndimage.label(mask, structure=np.ones((3, 3)))
+    )
     boxes = []
     for i in range(1, n + 1):
         ys, xs = np.where(labeled == i)
@@ -91,7 +96,9 @@ def format_digit(cropped):
     scale = 20.0 / max(h, w)
     new_h, new_w = max(1, round(h * scale)), max(1, round(w * scale))
     resized = np.array(
-        Image.fromarray(cropped.astype("uint8")).resize((new_w, new_h), Image.LANCZOS)
+        Image.fromarray(cropped.astype("uint8")).resize(
+            (new_w, new_h), Image.Resampling.LANCZOS
+        )
     ).astype("float32")
 
     canvas = np.zeros((28, 28), dtype="float32")
